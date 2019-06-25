@@ -19,7 +19,7 @@ class PlaylistsController < ApplicationController
     private
 
     def update_songs
-        Song.filter{|song| !song.code}.each{|song| song.fetch_number}
+        Song.all.filter{|song| !song.code}.each{|song| song.fetch_number}
     end
 
 end
