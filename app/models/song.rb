@@ -22,8 +22,8 @@ class Song < ApplicationRecord
     def clean_title
         # Getting rid of things like "2012 remaster"
         title = self.spotify_name.upcase
-        title = title.index("(") ? title.slice(0,string.index("(")-1) : title
-        title = title.index("-") ? title.slice(0,string.index("(")-1) : title
+        title = title.index("(") ? title.slice(0,title.index("(")-1) : title
+        title = title.index("-") ? title.slice(0,title.index("-")-1) : title
         title
     end
 
