@@ -4,7 +4,7 @@ class Song < ApplicationRecord
 
     def fetch_number
         # This calls and parses the Karaoke page
-        res = self.parse(self.spotify_name.upcase)
+        res = self.parse(self.clean_title)
         if res
             if res[:number_of_results] > 1
                 rank_and_choose_songs(res[:songs])
@@ -17,6 +17,14 @@ class Song < ApplicationRecord
             puts "Resource pinging failed with the following response:"
             puts res
         end
+    end
+
+    def clean_title
+        # Getting rid of things like "2012 remaster"
+        title = self.spotify_name.upcase
+        title = title.index("(") ? title.slice(0,string.index("(")-1) : title
+        title = title.index("-") ? title.slice(0,string.index("(")-1) : title
+        title
     end
 
     def rank_and_choose_songs(array_of_songs)
