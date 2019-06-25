@@ -43,7 +43,7 @@ class Song < ApplicationRecord
             song[:distance] = jarow.getDistance(self.spotify_artist.upcase, song[:artist])
             song
         end
-        reasonable_songs = jarowed_songs.filter{|song| song[:distance] > 0.75}
+        reasonable_songs = jarowed_songs.filter{|song| song[:distance] > 0.2}
         if reasonable_songs.length > 0
             sorted_array = reasonable_songs.sort_by{|song| 1-jarow.getDistance(self.spotify_artist.upcase, song[:artist])}
             update_song_with_object(sorted_array[0])
