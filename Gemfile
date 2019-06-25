@@ -25,6 +25,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'rspotify'
 gem 'fuzzy-string-match'
+gem 'active_model_serializers'
 # For getting closest artist
 
 # Use Active Storage variant

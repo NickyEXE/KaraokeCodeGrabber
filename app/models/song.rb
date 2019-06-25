@@ -48,6 +48,7 @@ class Song < ApplicationRecord
             sorted_array = reasonable_songs.sort_by{|song| 1-jarow.getDistance(self.spotify_artist.upcase, song[:artist])}
             update_song_with_object(sorted_array[0])
         else
+            puts "No code available for #{self.spotify_artist}'s #{self.spotify_name}'"
             self.update(title: self.spotify_name, artist: self.spotify_artist, code: "0")
         end
     end

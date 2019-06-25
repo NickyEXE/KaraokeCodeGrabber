@@ -3,17 +3,18 @@ class Playlist < ApplicationRecord
 
     def self.create_playlist_by_spotify_link(url)
         playlist_for_searching = url.split("/")[url.split("/").index("playlist")+1][0..21]
-        spotify_data = RSpotify::Playlist.find("abc","1YFkogEdz4NgkeaaDSl3yd")
+        spotify_data = RSpotify::Playlist.find("abc",playlist_for_searching)
         if spotify_data
             playlist = Playlist.create(name: spotify_data.name, description: spotify_data.description)
+            # Adding the songs to playlists, then getting the code, because the scrape is slow and I want the users to be able to use the playlists beforehand.
             playlist.add_all_songs_to_playlist(spotify_data.tracks)
-            playlist.get_codes
+            # making this happen after the original results are rendered
+            # playlist.get_codes
             playlist
         else
             puts "No Spotify Data available."
         end
     end
-
     def add_all_songs_to_playlist(spotify_tracks)
         spotify_tracks.each do |track|
             song = Song.where(spotify_name: track.name, spotify_artist: track.artists.first.name).first_or_create(spotify_name: track.name, spotify_artist: track.artists.first.name)
@@ -26,5 +27,4 @@ class Playlist < ApplicationRecord
             song.fetch_number
         end
     end
-
 end
