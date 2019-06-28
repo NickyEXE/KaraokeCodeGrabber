@@ -21,11 +21,11 @@ class Song < ApplicationRecord
 
     def clean_title
         # Getting rid of things like "2012 remaster"
-        title = self.spotify_name.upcase
-        puts self
-        title = title.index("(") ? title.slice(0,title.index("(")-1) : title
-        title = title.index("-") ? title.slice(0,title.index("-")-1) : title
-        title
+        cleaned_title = self.spotify_name.upcase
+        puts cleaned_title
+        cleaned_title.index("(") && cleaned_title.slice!(cleaned_title.index("("), cleaned_title.index(")")+1)
+        cleaned_title = cleaned_title.index("-") ? cleaned_title.slice(0,cleaned_title.index("-")-1) : cleaned_title
+        cleaned_title
     end
 
     def rank_and_choose_songs(array_of_songs)
@@ -69,6 +69,7 @@ class Song < ApplicationRecord
         begin 
             response = http.request(request)
             http.finish
+            sleep(1)
             response.body
         rescue EOFError
             puts "Hit an EOF Error"
@@ -103,6 +104,10 @@ class Song < ApplicationRecord
             end
         end
         array
+    end
+
+    def on_karaoke_machine?
+        self.code && self.code != "0"
     end
 
 end

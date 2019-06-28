@@ -5,7 +5,7 @@ class Playlist < ApplicationRecord
         playlist_for_searching = url.split("/")[url.split("/").index("playlist")+1][0..21]
         spotify_data = RSpotify::Playlist.find("abc",playlist_for_searching)
         if spotify_data
-            playlist = Playlist.create(name: spotify_data.name, description: spotify_data.description)
+            playlist = Playlist.create(name: spotify_data.name, description: CGI::unescapeHTML(spotify_data.description))
             # Adding the songs to playlists, then getting the code, because the scrape is slow and I want the users to be able to use the playlists beforehand.
             playlist.add_all_songs_to_playlist(spotify_data.tracks)
             # making this happen after the original results are rendered

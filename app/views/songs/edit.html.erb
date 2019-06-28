@@ -1,0 +1,16 @@
+<h1> Edit your Song!</h1>
+
+<%= form_for @song, url: update_song_path do |f| %>
+  <label>Title:</label><br>
+  <%= f.text_field :spotify_name %><br>
+  <label>Artist:</label><br>
+  <%= f.text_field :spotify_artist %><br>
+  <label>Title (on Karaoke Machine):</label><br>
+  <%= f.text_field :title %><br>
+  <label>Artist (on Karaoke Machine):</label><br>
+  <%= f.text_field :artist %><br>
+  <label>Code:</label><br>
+  <%= f.text_field :code %><br>
+  <%= hidden_field_tag 'playlist_id', @playlist_id  %>
+  <%= f.submit %>
+<% end %>
