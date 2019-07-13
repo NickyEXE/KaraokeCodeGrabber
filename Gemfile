@@ -11,6 +11,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5'
+gem 'rack-cors'
 #Sets up dotenv
 gem 'dotenv-rails', groups: [:development, :test]
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -26,6 +27,10 @@ gem 'jbuilder', '~> 2.5'
 gem 'rspotify'
 gem 'fuzzy-string-match'
 gem 'active_model_serializers'
+
+gem 'rack-cors', :require => 'rack/cors'
+
+gem 'redis'
 # For getting closest artist
 
 # Use Active Storage variant

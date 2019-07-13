@@ -1,20 +1,32 @@
 class PlaylistsController < ApplicationController
-    skip_before_action :verify_authenticity_token
-    after_action :update_songs
 
     def find_by_playlist
         @playlist = Playlist.create_playlist_by_spotify_link(params[:url])
         render json: @playlist
-    end
-
-    def wip
-        render "WIP"
+        Thread.new do
+            update_songs
+        Thread.exit
+        end
     end
 
     def show
         @playlist = Playlist.find(params[:id])
-        render :show
+        render json: @playlist
     end
+
+    def create
+        @playlist = Playlist.create_playlist_by_spotify_link(params[:url], params[:creator])
+        if @playlist.valid?
+            Thread.new do
+                @playlist.get_codes
+            Thread.exit
+            end
+            render json: @playlist
+        else
+            render json: {error: "That didn't work!"}
+        end
+    end
+
 
     private
 

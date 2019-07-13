@@ -56,7 +56,18 @@ class Song < ApplicationRecord
 
     def update_song_with_object(obj)
         self.update(title: obj[:song], artist: obj[:artist], code: obj[:number])
+        self.broadcast_to_all_playlists
     end
+
+    def broadcast_to_all_playlists
+        self.playlists.each do |playlist|
+            # PlaylistChannel.broadcast_to(playlist,{
+            #     payload: self.to_json
+            # })
+            ActionCable.server.broadcast("playlist_channel_#{playlist.id}", "Hello World")
+        end
+    end
+
 
     def response(query)
         puts 'calling this'
@@ -69,7 +80,7 @@ class Song < ApplicationRecord
         begin 
             response = http.request(request)
             http.finish
-            sleep(1)
+            sleep(3)
             response.body
         rescue EOFError
             puts "Hit an EOF Error"

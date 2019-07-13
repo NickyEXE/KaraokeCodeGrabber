@@ -10,6 +10,14 @@ module KaraokeCable
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+    config.api_only = true
+    config.debug_exception_response_format = :api
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        resource '/*', :headers => :any, :methods => :any
+      end
+    end
     RSpotify.authenticate(ENV["CLIENTID"], ENV["CLIENTSECRET"])
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
