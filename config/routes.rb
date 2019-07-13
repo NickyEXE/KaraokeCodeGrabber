@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   
   post 'playlists/find', to: 'playlists#find_by_playlist', as: 'find'
 
-  resources 'playlists', only: [:show, :create]
+  resources 'playlists', only: [:show, :create, :index]
   resources 'songs', only: [:show, :update]
 
   mount ActionCable.server => '/cable'

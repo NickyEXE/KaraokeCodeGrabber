@@ -9,6 +9,10 @@ class PlaylistsController < ApplicationController
         end
     end
 
+    def index
+        render json: Playlist.all
+    end
+
     def show
         @playlist = Playlist.find(params[:id])
         render json: @playlist
