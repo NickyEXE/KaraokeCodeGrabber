@@ -16,6 +16,10 @@ class PlaylistsController < ApplicationController
     def show
         @playlist = Playlist.find(params[:id])
         render json: @playlist
+        Thread.new do
+            update_songs
+        Thread.exit
+        end
     end
 
     def create
@@ -35,7 +39,7 @@ class PlaylistsController < ApplicationController
     private
 
     def update_songs
-        Song.all.filter{|song| !song.code}.each{|song| song.fetch_number}
+        @playlist.songs.filter{|song| !song.code}.each{|song| song.fetch_number}
     end
 
 end

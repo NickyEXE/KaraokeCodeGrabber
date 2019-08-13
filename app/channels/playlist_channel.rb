@@ -1,7 +1,8 @@
 class PlaylistChannel < ApplicationCable::Channel
   def subscribed
     # @playlist = Playlist.find(params[:id])
-    # puts "We have a new subscriber on playlist #{@playlist.name}"
+    puts "We have a new subscriber on " + "playlist_channel_#{params[:id]}"
+    puts self
     # stream_for @playlist
     stream_from "playlist_channel_#{params[:id]}"
   end

@@ -64,7 +64,8 @@ class Song < ApplicationRecord
             # PlaylistChannel.broadcast_to(playlist,{
             #     payload: self.to_json
             # })
-            ActionCable.server.broadcast("playlist_channel_#{playlist.id}", "Hello World")
+            ActionCable.server.broadcast("playlist_channel_#{playlist.id}", self)
+            puts "broadcasting to" + "playlist_channel_#{playlist.id}"
         end
     end
 

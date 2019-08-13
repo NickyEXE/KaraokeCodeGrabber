@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2019_07_12_163604) do
     t.bigint "playlist_id", null: false
     t.bigint "song_id", null: false
   end
-
+  
   create_table "songs", force: :cascade do |t|
     t.string "title"
     t.string "artist"
