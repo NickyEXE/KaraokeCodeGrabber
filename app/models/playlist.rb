@@ -23,7 +23,7 @@ class Playlist < ApplicationRecord
     end
 
     def get_codes
-        self.songs.where(code: nil).each do |song|
+        self.songs.where(code: nil).sort_by{|song| song.spotify_artist}.each do |song|
             song.fetch_number
         end
     end

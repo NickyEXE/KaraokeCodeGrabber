@@ -10,8 +10,6 @@ class SongsController < ApplicationController
         set_song
         strong_song_params
         @song.update(strong_song_params)
-        @playlist = Playlist.find(params[:playlist_id])
-        redirect_to playlist_path(@playlist)
     end
 
     private
@@ -21,7 +19,7 @@ class SongsController < ApplicationController
     end
 
     def strong_song_params
-        params.require(:song).permit(:title, :artist, :code, :spotify_name, :spotify_artist)
+        params.require(:song).permit(:title, :artist, :code, :spotify_name, :spotify_artist, :id)
     end
 
 end
