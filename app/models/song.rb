@@ -21,10 +21,12 @@ class Song < ApplicationRecord
 
     def clean_title
         # Getting rid of things like "2012 remaster"
+        # 
         cleaned_title = self.spotify_name.upcase
         puts cleaned_title
         cleaned_title.index("(") && cleaned_title.slice!(cleaned_title.index("("), cleaned_title.index(")")+1)
         cleaned_title = cleaned_title.index("-") ? cleaned_title.slice(0,cleaned_title.index("-")-1) : cleaned_title
+        cleaned_title = cleaned_title.index("THE ") ? cleaned_title.split("THE ").join("") : cleaned_title
         cleaned_title
     end
 
@@ -129,14 +131,14 @@ class Song < ApplicationRecord
               response = RestClient.get url
             rescue RestClient::ExceptionWithResponse => e
               if e.class == RestClient::NotFound
-                "I'm sorry, it looks like we don't have lyrics available for #{self.spotify_artist}'s #{self.spotify_name}'"
+                return "I'm sorry, it looks like we don't have lyrics available for #{self.spotify_artist}'s #{self.spotify_name}'"
               end
             end
             if response
               return JSON.parse(response)["lyrics"]
             end
           else
-            "This program needs both a song name and a song title to render its lyrics."
+            return "This program needs both a song name and a song title to render its lyrics."
           end
     end
 
