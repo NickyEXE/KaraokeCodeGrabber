@@ -80,6 +80,7 @@ test:
 #
 production:
   <<: *default
-  database: KaraokeCable_production
-  username: KaraokeCable
-  password: <%= ENV['KARAOKECABLE_DATABASE_PASSWORD'] %>
+  url: <%= ENV['HEROKU_URL']%>
+  # database: KaraokeCable_production
+  # username: KaraokeCable
+  # password: <%= ENV['KARAOKECABLE_DATABASE_PASSWORD'] %>
