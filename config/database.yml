@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: KaraokeCable_production
-  username: KaraokeCable
-  password: <%= ENV['KARAOKECABLE_DATABASE_PASSWORD'] %>
+  # username: KaraokeCable
+  # password: <%= ENV['KARAOKECABLE_DATABASE_PASSWORD'] %>
