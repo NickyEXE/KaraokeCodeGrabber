@@ -20,17 +20,20 @@ class Song < ApplicationRecord
     end
 
     def clean_title
-        # Getting rid of things like "2012 remaster"
-        # 
+        # This method gets rid of common differences between Spotify song titles and how they're listed in karaoke databases, such as inclusions of "(Remastered)", use of the word "The"
         cleaned_title = self.spotify_name.upcase
         puts cleaned_title
+        # Removes anything in a parenthesis, ie. "(Remaster)"
         cleaned_title.index("(") && cleaned_title.slice!(cleaned_title.index("("), cleaned_title.index(")")+1)
+        # Removes anything after a dash, such as "- Studio Version"
         cleaned_title = cleaned_title.index("-") ? cleaned_title.slice(0,cleaned_title.index("-")-1) : cleaned_title
+        # Removes any "THE" in front of a song title
         cleaned_title = cleaned_title.index("THE ") ? cleaned_title.split("THE ").join("") : cleaned_title
         cleaned_title
     end
 
     def rank_and_choose_songs(array_of_songs)
+        # The karaoke database we're scraping returns an html table of possible matches. This checks to see if there are any exact matches before turning to fuzzy string matching.
         check_for_exact_matches = array_of_songs.filter{|song| song[:artist].include? self.spotify_artist.upcase}
         if check_for_exact_matches.length>0
             self.update_song_with_object(check_for_exact_matches[0])
@@ -95,6 +98,7 @@ class Song < ApplicationRecord
     end
 
     def parse(query)
+        # Turns the HTML response from the karaoke server into a hash.
         query_response = self.response(query)
         if query_response
             noko = Nokogiri::HTML(query_response)
@@ -124,14 +128,23 @@ class Song < ApplicationRecord
         self.code && self.code != "0"
     end
 
+
     def lyrics
-        if self.spotify_artist && self.spotify_name
+        # Tries it with both the clean title and the original spotify title if the first fails
+        lyrics = get_lyrics(self.spotify_artist, self.clean_title)
+        lyrics === "" && lyrics = get_lyrics(self.spotify_artist, self.spotify_name)
+        return lyrics
+    end
+
+
+    def get_lyrics(artist, name)
+        if artist && name
             begin
-              url = URI.escape("https://api.lyrics.ovh/v1/#{self.spotify_artist.downcase}/#{self.spotify_name.downcase}")
+              url = URI.escape("https://api.lyrics.ovh/v1/#{artist.downcase}/#{name.downcase}")
               response = RestClient.get url
             rescue RestClient::ExceptionWithResponse => e
               if e.class == RestClient::NotFound
-                return "I'm sorry, it looks like we don't have lyrics available for #{self.spotify_artist}'s #{self.spotify_name}'"
+                return "We don't have lyrics available for #{self.spotify_artist}'s #{self.spotify_name}'"
               end
             end
             if response

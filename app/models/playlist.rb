@@ -17,9 +17,36 @@ class Playlist < ApplicationRecord
     end
     def add_all_songs_to_playlist(spotify_tracks)
         spotify_tracks.each do |track|
-            song = Song.where(spotify_name: track.name, spotify_artist: track.artists.first.name).first_or_create(spotify_name: track.name, spotify_artist: track.artists.first.name)
-            self.songs << song
+            self.first_or_create_checking_for_albums(track)
         end
+    end
+
+    def first_or_create_checking_for_albums(track)
+        song = Song.where(spotify_name: track.name, spotify_artist: track.artists.first.name).first
+        if !song
+            if track.respond_to?(:album)
+                song = Song.create(
+                    spotify_name: track.name, 
+                    spotify_artist: track.artists.first.name, 
+                    url: track.external_urls.values.first, 
+                    artist_url: track.artists[0].external_urls["spotify"], 
+                    album_name: track.album.name, 
+                    album_art: track.album.images[0]["url"], 
+                    release_date: track.album.release_date[0..3].to_i
+                    )
+            else
+                song = Song.create(
+                    spotify_name: track.name, 
+                    spotify_artist: track.artists.first.name, 
+                    url: track.external_urls.values.first, 
+                    artist_url: track.artists[0].external_urls["spotify"], 
+                    album_name: "Single",
+                    album_art: "", 
+                    release_date: nil
+                )
+            end
+        end
+        self.songs << song
     end
 
     def get_codes

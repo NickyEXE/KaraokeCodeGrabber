@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_15_215305) do
+ActiveRecord::Schema.define(version: 2019_08_19_182841) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,11 @@ ActiveRecord::Schema.define(version: 2019_08_15_215305) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "spotify_name"
     t.string "spotify_artist"
+    t.string "album_name"
+    t.string "album_art"
+    t.string "release_date"
+    t.string "artist_url"
+    t.string "url"
   end
 
 end
