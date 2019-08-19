@@ -22,3 +22,11 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+Album name: track.album.name
+Album art: track.album.images[0]["url"]
+Album release date: track.album.release_date[0..3].to_i
+Artist spotify link: track.artists[0].href
+Url: track.external_urls.values.first
+
