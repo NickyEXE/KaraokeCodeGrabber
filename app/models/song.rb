@@ -122,4 +122,22 @@ class Song < ApplicationRecord
         self.code && self.code != "0"
     end
 
+    def lyrics
+        if self.spotify_artist && self.spotify_name
+            begin
+              url = URI.escape("https://api.lyrics.ovh/v1/#{self.spotify_artist.downcase}/#{self.spotify_name.downcase}")
+              response = RestClient.get url
+            rescue RestClient::ExceptionWithResponse => e
+              if e.class == RestClient::NotFound
+                "I'm sorry, it looks like we don't have lyrics available for #{self.spotify_artist}'s #{self.spotify_name}'"
+              end
+            end
+            if response
+              return JSON.parse(response)["lyrics"]
+            end
+          else
+            "This program needs both a song name and a song title to render its lyrics."
+          end
+    end
+
 end

@@ -8,8 +8,9 @@ class SongsController < ApplicationController
 
     def update
         set_song
-        strong_song_params
-        @song.update(strong_song_params)
+        song_updated_params = strong_song_params.to_h
+        song_updated_params["code"] === "" && song_updated_params["code"] = "0"
+        @song.update(song_updated_params)
     end
 
     private
