@@ -82,8 +82,8 @@ Rails.application.configure do
 
 
   config.action_cable.mount_path = '/cable'
-  config.action_cable.url = 'wss://localhost:3000/cable'
-  config.action_cable.allowed_request_origins = [ /http:\/\/localhost:*/ ]
+  config.action_cable.url = 'wss://serene-scrubland-24770.herokuapp.com/cable'
+  config.action_cable.allowed_request_origins = ['https://sing-with-nicky.herokuapp.com', 'http://sing-with-nicky.herokuapp.com']
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
