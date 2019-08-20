@@ -6,7 +6,10 @@ class SongsController < ApplicationController
     end
 
     def update_all_songs
-        Song.get_codes
+        Thread.new do
+            Song.get_codes
+        Thread.exit
+        render :json {response: "IT'S WORKING"}
     end
 
 
