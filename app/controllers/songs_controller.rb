@@ -9,7 +9,8 @@ class SongsController < ApplicationController
         Thread.new do
             Song.get_codes
         Thread.exit
-        render :json {response: "IT'S WORKING"}
+        end
+        render :json => {response: "IT'S WORKING"}
     end
 
 
