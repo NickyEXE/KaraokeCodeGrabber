@@ -5,6 +5,10 @@ class SongsController < ApplicationController
         render :json => @song
     end
 
+    def update_all_songs
+        Song.get_codes
+    end
+
 
     def update
         set_song
