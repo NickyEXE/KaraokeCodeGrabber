@@ -6,5 +6,7 @@ Rails.application.routes.draw do
   resources 'playlists', only: [:show, :create, :index]
   resources 'songs', only: [:show, :update]
 
+  get 'songs/update_all_songs', to: 'songs#update_all_songs'
+
   mount ActionCable.server => '/cable'
 end

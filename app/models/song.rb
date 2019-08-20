@@ -155,4 +155,10 @@ class Song < ApplicationRecord
           end
     end
 
+    def self.get_codes
+        Song.where(code: nil).each do |song|
+            song.fetch_number
+        end
+    end
+
 end
