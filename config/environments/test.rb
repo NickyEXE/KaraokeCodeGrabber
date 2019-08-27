@@ -30,6 +30,12 @@ Rails.application.configure do
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
+
+  config.action_cable.mount_path = '/cable'
+  config.action_cable.url = 'ws://localhost:3000/cable'
+  config.action_cable.allowed_request_origins = ['https://singwithnicky.herokuapp.com', 'http://singwithnicky.herokuapp.com', 'http://localhost:3001', 'https://localhost:3001']
+
+
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 
