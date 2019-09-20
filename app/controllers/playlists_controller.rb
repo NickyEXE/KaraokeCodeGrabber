@@ -1,13 +1,10 @@
 class PlaylistsController < ApplicationController
 
-    def find_by_playlist
-        @playlist = Playlist.create_playlist_by_spotify_link(params[:url])
-        render json: @playlist
-        Thread.new do
-            update_songs
-        Thread.exit
-        end
-    end
+    # def find_by_playlist
+    #     @playlist = Playlist.create_playlist_by_spotify_link(params[:url])
+    #     UpdateSongsJob.perform_later @playlist.id
+    #     render json: @playlist
+    # end
 
     def index
         render json: Playlist.all
@@ -15,20 +12,14 @@ class PlaylistsController < ApplicationController
 
     def show
         @playlist = Playlist.find(params[:id])
+        # UpdateSongsJob.perform_later @playlist.id
         render json: @playlist
-        Thread.new do
-            update_songs
-        Thread.exit
-        end
     end
 
     def create
         @playlist = Playlist.create_playlist_by_spotify_link(params[:url], params[:creator])
         if @playlist.valid?
-            Thread.new do
-                @playlist.get_codes
-            Thread.exit
-            end
+            UpdateSongsJob.perform_later @playlist.id
             render json: @playlist
         else
             render json: {error: "That didn't work!"}

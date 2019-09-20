@@ -12,6 +12,7 @@ module KaraokeCable
     config.load_defaults 6.0
     config.api_only = true
     config.debug_exception_response_format = :api
+    config.active_job.queue_adapter = :sidekiq
     config.middleware.use Rack::Cors do
       allow do
         origins '*'
