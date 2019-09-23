@@ -6,7 +6,7 @@ ruby '2.6.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0.rc1'
 
-gem 'redis'
+gem 'redis', '~> 4.0.0'
 gem 'sidekiq'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
@@ -33,7 +33,7 @@ gem 'active_model_serializers'
 
 gem 'rack-cors', :require => 'rack/cors'
 
-gem 'redis'
+# gem 'redis'
 # For getting closest artist
 
 # Use Active Storage variant
