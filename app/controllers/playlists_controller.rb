@@ -12,7 +12,7 @@ class PlaylistsController < ApplicationController
 
     def show
         @playlist = Playlist.find(params[:id])
-        # UpdateSongsJob.perform_later @playlist.id
+        UpdateSongsJob.perform_later @playlist.id
         render json: @playlist
     end
 
