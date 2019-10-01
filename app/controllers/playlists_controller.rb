@@ -19,7 +19,6 @@ class PlaylistsController < ApplicationController
     def create
         @playlist = Playlist.create_playlist_by_spotify_link(params[:url], params[:creator])
         if @playlist.valid?
-            UpdateSongsJob.perform_later @playlist.id
             render json: @playlist
         else
             render json: {error: "That didn't work!"}
