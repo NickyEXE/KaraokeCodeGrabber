@@ -5,6 +5,11 @@ class SongsController < ApplicationController
         render :json => @song
     end
 
+    def index
+        @songs = Song.all.select{|song| !!song.code}
+        render :json => @songs, each_serializer: SongIndexSerializer
+    end
+
     def update_all_songs
         Thread.new do
             Song.get_codes

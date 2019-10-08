@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # post 'playlists/find', to: 'playlists#find_by_playlist', as: 'find'
   get 'songs/update_all_songs', to: 'songs#update_all_songs'
   resources 'playlists', only: [:show, :create, :index]
-  resources 'songs', only: [:show, :update]
+  resources 'songs', only: [:show, :index, :update]
 
   
 
