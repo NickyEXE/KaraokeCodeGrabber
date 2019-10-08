@@ -6,7 +6,7 @@ class SongsController < ApplicationController
     end
 
     def index
-        @songs = Song.all.select{|song| !!song.code}
+        @songs = Song.all.select{|song| song.code && song.code != "0"}
         render :json => @songs, each_serializer: SongIndexSerializer
     end
 
