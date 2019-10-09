@@ -86,7 +86,7 @@ class Song < ApplicationRecord
         begin 
             response = http.request(request)
             http.finish
-            sleep(7)
+            sleep(3)
             response.body
         rescue EOFError
             puts "Hit an EOF Error"
