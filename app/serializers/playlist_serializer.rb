@@ -1,5 +1,5 @@
 class PlaylistSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :creator, :image_url, :songs, :batman
+  attributes :id, :name, :description, :creator, :image_url, :songs
 
   def songs
     self.object.songs
