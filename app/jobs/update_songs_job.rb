@@ -4,6 +4,7 @@ class UpdateSongsJob < ApplicationJob
   def perform(playlist_id)
     puts "why hello there"
     puts "we're performing the update songs jobs!"
+    puts(playlist_id)
     # Playlist.find(playlist_id).songs.filter{|song| !song.code}.each{|song| song.fetch_number}
   end
 end
