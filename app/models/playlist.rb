@@ -1,13 +1,21 @@
 class Playlist < ApplicationRecord
     has_and_belongs_to_many :songs
 
-    def self.create_playlist_by_spotify_link(url, creator)
+    def self.fetch_playlist(url)
+        client_token = Base64.strict_encode64(ENV["SPOTIFYCLIENTID"] + ":" + ENV["SPOTIFYCLIENTSECRET"])
+        spotify_token = RestClient.post("https://accounts.spotify.com/api/token",{"grant_type": "client_credentials"}, {"Authorization": "Basic #{client_token}"})
+        parsed_token = JSON.parse(spotify_token)
         playlist_for_searching = url.split("/")[url.split("/").index("playlist")+1][0..21]
-        spotify_data = RSpotify::Playlist.find("abc",playlist_for_searching)
+        playlist = JSON.parse(`curl -X GET #{"https://api.spotify.com/v1/playlists/" + playlist_for_searching} -H "Authorization: Bearer #{parsed_token["access_token"]}"`)
+    end
+
+    def self.create_playlist_by_spotify_link(url, creator)
+        spotify_data = Playlist.fetch_playlist(url)
         if spotify_data
-            playlist = Playlist.create(name: spotify_data.name, description: CGI::unescapeHTML(spotify_data.description), creator: creator, image_url: spotify_data.images[0]["url"])
+            playlist = Playlist.create(name: spotify_data["name"], description: CGI::unescapeHTML(spotify_data["description"]), creator: creator, image_url: spotify_data["images"][0]["url"])
             # Adding the songs to playlists, then getting the code, because the scrape is slow and I want the users to be able to use the playlists beforehand.
-            playlist.add_all_songs_to_playlist(spotify_data.tracks)
+            # byebug
+            playlist.add_all_songs_to_playlist(spotify_data["tracks"]["items"])
             # making this happen after the original results are rendered
             # playlist.get_codes
             playlist
@@ -17,29 +25,29 @@ class Playlist < ApplicationRecord
     end
     def add_all_songs_to_playlist(spotify_tracks)
         spotify_tracks.each do |track|
-            self.first_or_create_checking_for_albums(track)
+            self.first_or_create_checking_for_albums(track["track"])
         end
     end
 
     def first_or_create_checking_for_albums(track)
-        song = Song.where(spotify_name: track.name, spotify_artist: track.artists.first.name).first
+        song = Song.where(spotify_name: track["name"], spotify_artist: track["artists"].first["name"]).first
         if !song
-            if track.respond_to?(:album)
+            if track["album"]
                 song = Song.create(
-                    spotify_name: track.name, 
-                    spotify_artist: track.artists.first.name, 
-                    url: track.external_urls.values.first, 
-                    artist_url: track.artists[0].external_urls["spotify"], 
-                    album_name: track.album.name, 
-                    album_art: track.album.images[0]["url"], 
-                    release_date: track.album.release_date[0..3].to_i
+                    spotify_name: track["name"], 
+                    spotify_artist: track["artists"].first["name"], 
+                    url: track["external_urls"].values.first, 
+                    artist_url: track["artists"][0]["external_urls"]["spotify"], 
+                    album_name: track["album"]["name"], 
+                    album_art: track["album"]["images"][0]["url"], 
+                    release_date: track["album"]["release_date"][0..3].to_i
                     )
             else
                 song = Song.create(
-                    spotify_name: track.name, 
-                    spotify_artist: track.artists.first.name, 
-                    url: track.external_urls.values.first, 
-                    artist_url: track.artists[0].external_urls["spotify"], 
+                    spotify_name: track["name"], 
+                    spotify_artist: track["artists"].first["name"], 
+                    url: track["external_urls"].values.first, 
+                    artist_url: track["artists"][0]["external_urls"]["spotify"], 
                     album_name: "Single",
                     album_art: "", 
                     release_date: nil
