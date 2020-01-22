@@ -25,6 +25,13 @@ class PlaylistsController < ApplicationController
         end
     end
 
+    def import
+        # byebug
+        uri = params["url"].split("/playlists/")[1]
+        playlist = Playlist.create_playlist_by_uri(uri)
+        render json: {id: playlist.id}
+    end
+
 
     private
 

@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'songs/update_all_songs', to: 'songs#update_all_songs'
   resources 'playlists', only: [:show, :create, :index]
   resources 'songs', only: [:show, :index, :update]
+  post 'playlists/import', to: 'playlists#import'
 
   
 
