@@ -30,11 +30,9 @@ class Playlist < ApplicationRecord
     end
 
     def self.add_playlist_by_spotify_data_and_creator(spotify_data, creator)
-        # byebug
-        creator == "THIS_IS_THE_NULL_CASE" && creator = spotify_data["owner"]
+        creator == "THIS_IS_THE_NULL_CASE" && creator = spotify_data["owner"]["display_name"]
         playlist = Playlist.create(name: spotify_data["name"], description: CGI::unescapeHTML(spotify_data["description"]), creator: creator, image_url: spotify_data["images"][0]["url"])
             # Adding the songs to playlists, then getting the code, because the scrape is slow and I want the users to be able to use the playlists beforehand.
-            # byebug
         playlist.add_all_songs_to_playlist(spotify_data["tracks"]["items"])
             # making this happen after the original results are rendered
             # playlist.get_codes
