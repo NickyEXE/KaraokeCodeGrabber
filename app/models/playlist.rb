@@ -31,6 +31,7 @@ class Playlist < ApplicationRecord
             # Spotify only pulls 100 tracks, but allows you to make additional offsetted fetch for the rest of your songs
         total_number_of_tracks = spotify_data["tracks"]["total"]
         total_number_of_tracks > 100 && playlist.grab_additional_tracks(uri, total_number_of_tracks)
+        return playlist
     end
 
     def add_all_songs_to_playlist(spotify_tracks)
