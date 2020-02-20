@@ -61,27 +61,28 @@ class Playlist < ApplicationRecord
     def first_or_create_checking_for_albums(track)
         song = Song.where(spotify_name: track["name"], spotify_artist: track["artists"].first["name"]).first
         if !song
+            song_data = {}
+            song_data[:spotify_name] = track["name"]
+            song_data[:spotify_artist] = track["artists"].first["name"]
+            song_data[:url] = track["external_urls"].values.first
+            song_data[:artist_url] = track["artists"][0]["external_urls"]["spotify"]
             if track["album"]
-                song = Song.create(
-                    spotify_name: track["name"], 
-                    spotify_artist: track["artists"].first["name"], 
-                    url: track["external_urls"].values.first, 
-                    artist_url: track["artists"][0]["external_urls"]["spotify"], 
-                    album_name: track["album"]["name"], 
-                    album_art: track["album"]["images"][0]["url"], 
-                    release_date: track["album"]["release_date"][0..3].to_i
-                    )
+                song_data[:album_name] = track["album"]["name"]
+                if track["album"]["release_date"]
+                    song_data[:release_date] = track["album"]["release_date"][0..3].to_i
+                else
+                    song_data[:release_date] = nil
+                end
+                if (track["album"]["images"] && track["album"]["images"][0])
+                    song_data[:album_art] = track["album"]["images"][0]["url"]
+                else
+                    song_data[:album_art] = ""
+                end
             else
-                song = Song.create(
-                    spotify_name: track["name"], 
-                    spotify_artist: track["artists"].first["name"], 
-                    url: track["external_urls"].values.first, 
-                    artist_url: track["artists"][0]["external_urls"]["spotify"], 
-                    album_name: "Single",
-                    album_art: "", 
-                    release_date: nil
-                )
+                song_data[:album_name] = "Single"
+                song_data[:release_date]= nil
             end
+            song = Song.create(song_data)
         end
         self.songs << song
     end
