@@ -83,6 +83,7 @@ Rails.application.configure do
 
   config.action_cable.mount_path = '/cable'
   config.action_cable.url = 'wss://serene-scrubland-24770.herokuapp.com/cable'
+  config.web_socket_server_url = 'wss://serene-scrubland-24770.herokuapp.com/cable'
   config.action_cable.allowed_request_origins = ['https://singwithnicky.herokuapp.com', 'http://singwithnicky.herokuapp.com']
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?

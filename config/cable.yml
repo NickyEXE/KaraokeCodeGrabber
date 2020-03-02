@@ -5,5 +5,4 @@ test:
   adapter: async
 production:
   adapter: redis
-  url: redis://h:p9e2e1a7daa59fcc5b799b96afa52bdb0e2ef72abace530fb84fa732ed727d116@ec2-34-225-156-155.compute-1.amazonaws.com:19229
-  channel_prefix: qsmart-api_production
+  url: redis://redistogo:3ca956ba8b958e26863eeedfa6fc3bb4@hammerjaw.redistogo.com:11348/
