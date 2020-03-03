@@ -7,7 +7,7 @@ class PlaylistsController < ApplicationController
     # end
 
     def index
-        render json: Playlist.all
+        render :json => Playlist.all.to_json
     end
 
     def show
