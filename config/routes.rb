@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources 'playlists', only: [:show, :create, :index]
   resources 'songs', only: [:show, :index, :update]
   post 'playlists/import', to: 'playlists#import'
+  get '/ping', to: proc { [200, {}, ['']] }
 
   
 

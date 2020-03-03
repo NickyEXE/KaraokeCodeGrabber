@@ -26,6 +26,10 @@ class SongsController < ApplicationController
         @song.update(song_updated_params)
     end
 
+    def pong
+        render status: 200
+    end
+
     private
 
     def set_song
