@@ -1,32 +1,19 @@
-# README
+# Karaoke Code Grabber
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This repo contains the backend for https://SingWithNicky.herokuapp.com/
 
-Things you may want to cover:
+The frontend repo is available [here.](https://github.com/NickyEXE/KaraokeImporter)
 
-* Ruby version
+# What does this do?
 
-* System dependencies
+The biggest karaoke code book in the city is provided by SingSingMedia, with a rudimentary search feature available at https://www.singsingmedia.com/search. I wanted to provide a better interface that uses Spotify Playlists to provide a list of songs in the Karaoke Book that you might want to sing. 
 
-* Configuration
+This app allows for OAuth on Spotify, and then slowly pings the SingSingMedia database using a Jarow-Winkler algorithm to match each song to their resulting item in the database. It also allows for users to listen to songs and find lyrics through an additional AAPI.
 
-* Database creation
+# What's being used here
 
-* Database initialization
+Pinging the database is time intensive, and has some built in sleep time so as not to trigger an error for too many requests from the server. The backend uses websockets and background processing to share each individual song with the user as it is processed, so they can continue using the App while the playlist is assembled for them.
 
-* How to run the test suite
+# Does this work?
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Album name: track.album.name
-Album art: track.album.images[0]["url"]
-Album release date: track.album.release_date[0..3].to_i
-Artist spotify link: track.artists[0].href
-Url: track.external_urls.values.first
-
+Yep! I've used it at Gagopa, Sing Sing Karaoke, Boho Karaoke, and more!
